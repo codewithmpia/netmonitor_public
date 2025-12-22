@@ -1,0 +1,131 @@
+{% extends "partials/base.html" %}
+{% from "partials/macro.html" import render_section_title_content %}
+
+{% block title %}
+    Tableau de Bord - NetMonitor
+{% endblock %}
+
+{% block section_title %}
+    {{ render_section_title_content(
+        title="Tableau de Bord") 
+    }}
+{% endblock %}
+
+{% block section_content %}
+    <section>
+        <div class="max-w-screen-lg mx-auto px-4">
+            {% if clients %}
+                <!-- Résumé des machines -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-sky-800 mb-4">Machines surveillées ({{ clients|length }})</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {% for client in clients %}
+                            <a href="{{ url_for('client_metrics', hostname=client.hostname) }}" class="bg-white rounded-lg shadow-md p-4 border-l-4 {% if client.status == 'Online' %}border-green-500{% else %}border-gray-400{% endif %} hover:shadow-lg transition-all duration-300">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">{{ client.hostname }}</h3>
+                                        <p class="text-sm text-gray-500">Dernière mise à jour: {{ client.last_update }}</p>
+                                    </div>
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium {% if client.status == 'Online' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                        {{ client.status }}
+                                    </span>
+                                </div>
+                                
+                                <!-- Utilisation CPU -->
+                                <div class="mt-3">
+                                    <div class="flex justify-between items-center text-sm mb-1">
+                                        <span class="font-medium text-gray-700">CPU</span>
+                                        <span class="text-gray-600">
+                                            {% if client.metrics.cpu.cpu_percent_avg is defined %}
+                                                {{ client.metrics.cpu.cpu_percent_avg }}%
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-sky-600 h-2 rounded-full" style="width: {% if client.metrics.cpu.cpu_percent_avg is defined %}{{ client.metrics.cpu.cpu_percent_avg }}{% else %}0{% endif %}%"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Utilisation Mémoire -->
+                                <div class="mt-3">
+                                    <div class="flex justify-between items-center text-sm mb-1">
+                                        <span class="font-medium text-gray-700">Mémoire</span>
+                                        <span class="text-gray-600">
+                                            {% if client.metrics.memory.virtual_memory.percent is defined %}
+                                                {{ client.metrics.memory.virtual_memory.percent }}%
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-sky-600 h-2 rounded-full" style="width: {% if client.metrics.memory.virtual_memory.percent is defined %}{{ client.metrics.memory.virtual_memory.percent }}{% else %}0{% endif %}%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Utilisation Disque -->
+                                <div class="mt-3">
+                                    <div class="flex justify-between items-center text-sm mb-1">
+                                        <span class="font-medium text-gray-700">Disque</span>
+                                        <span class="text-gray-600">
+                                            {% set root_partition = none %}
+                                            {% if client.metrics.disk and client.metrics.disk.partitions %}
+                                                {% for partition in client.metrics.disk.partitions %}
+                                                    {% if partition.mountpoint == '/' %}
+                                                        {% set root_partition = partition %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if root_partition %}
+                                                    {{ root_partition.percent }}%
+                                                {% else %}
+                                                    {{ client.metrics.disk.partitions[0].percent }}%
+                                                {% endif %}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        {% set disk_percent = 0 %}
+                                        {% if client.metrics.disk and client.metrics.disk.partitions %}
+                                            {% for partition in client.metrics.disk.partitions %}
+                                                {% if partition.mountpoint == '/' %}
+                                                    {% set disk_percent = partition.percent %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if disk_percent == 0 and client.metrics.disk.partitions|length > 0 %}
+                                                {% set disk_percent = client.metrics.disk.partitions[0].percent %}
+                                            {% endif %}
+                                        {% endif %}
+                                        
+                                        <div class="h-2 rounded-full {% if disk_percent > 90 %}bg-red-500{% elif disk_percent > 70 %}bg-amber-500{% else %}bg-sky-600{% endif %}" style="width: {{ disk_percent }}%"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                
+            {% else %}
+                <!-- Aucune machine connectée -->
+                <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                    <div class="bg-gray-100 p-4 rounded-full inline-flex mx-auto mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-12 w-12 text-gray-500" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" ry="2"/><path d="M8 21h8M12 17v4"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Aucune machine connectée</h3>
+                    <p class="text-gray-600 mb-6">Aucune machine ne transmet actuellement des métriques au serveur.</p>
+                    <p class="text-gray-500 text-sm">Exécutez le client NetMonitor sur les machines que vous souhaitez surveiller.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block block_script %}
+    <script src="{{ url_for('static', filename='js/floating-refresh-button.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

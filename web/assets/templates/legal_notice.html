@@ -1,0 +1,234 @@
+{% extends "partials/base.html" %}
+{% from "partials/macro.html" import render_section_title_content %}
+
+{% block title %}
+    Mentions légales - NetMonitor
+{% endblock %}
+
+{% block section_title %}
+    {{ render_section_title_content(
+        title="Mentions légales") 
+    }}
+{% endblock %}
+
+{% block section_content %}
+    <section>
+        <div class="max-w-screen-lg mx-auto px-4">
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl">Informations légales concernant l'utilisation de NetMonitor, projet étudiant de monitoring réseau.</p>
+            
+            <!-- À propos du projet -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">À propos du projet</h3>
+                            <p class="text-sm text-sky-600">
+                                Informations sur ce projet étudiant
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <p class="text-gray-700">NetMonitor est un projet étudiant développé dans le cadre du :</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-semibold text-gray-800">Projet final du cours de réseaux (Chapitre 10)</p>
+                            <p>Institut d'Enseignement à Distance (IED)</p>
+                            <p>Université Paris 8</p>
+                            <p>L2 Informatique</p>
+                            <p>Année académique 2024-2025</p>
+                            <p>Responsable du projet : Mpia Mimpiya PULUDISU (N° étudiant : 18913467)</p>
+                            <p>GitHub : <a href="https://github.com/codewithmpia" class="text-sky-600 hover:text-sky-800 transition-colors" target="_blank">https://github.com/codewithmpia</a></p>
+                        </div>
+                        <p class="text-gray-700 mt-4">Ce projet est réalisé à des fins pédagogiques uniquement et n'a pas vocation commerciale.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contexte technique -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><path d="M6 6h.01M6 18h.01"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">Contexte technique</h3>
+                            <p class="text-sm text-sky-600">
+                                Nature et fonctionnalités du projet
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <p class="text-gray-700">NetMonitor est un système client-serveur permettant de :</p>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                            <li>Surveiller en temps réel les ressources système (CPU, mémoire, disque, réseau) de plusieurs machines sur un réseau local</li>
+                            <li>Partager des fichiers entre les machines connectées</li>
+                            <li>Visualiser les données via une interface web interactive</li>
+                        </ul>
+                        
+                        <p class="text-gray-700 mt-4">Le projet est développé avec les technologies suivantes :</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p><span class="font-medium">Backend :</span> Python avec architecture modulaire et programmation orientée objet</p>
+                            <p><span class="font-medium">Communication réseau :</span> Sockets TCP/IP, sélection non-bloquante (select())</p>
+                            <p><span class="font-medium">API Web :</span> Flask pour exposer une API REST et servir l'interface web</p>
+                            <p><span class="font-medium">Frontend :</span> HTML/CSS/JavaScript avec Chart.js pour les visualisations</p>
+                            <p><span class="font-medium">Collecte de données :</span> Module psutil pour obtenir les métriques système</p>
+                        </div>
+                        
+                        <p class="text-gray-700 mt-4">L'application est fournie dans un contexte éducatif et n'est pas destinée à un usage en production.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Propriété intellectuelle -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">Propriété intellectuelle</h3>
+                            <p class="text-sm text-sky-600">
+                                Droits d'auteur et licences
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <p class="text-gray-700">Le code source de ce projet étudiant est la propriété intellectuelle de son auteur (<a href="https://github.com/codewithmpia" target="_blank" class="text-sky-600 hover:text-sky-800 transition-colors">Mpia Mimpiya PULUDISU</a>).</p>
+                        
+                        <p class="text-gray-700">Ce projet utilise des bibliothèques et frameworks open source, notamment :</p>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                            <li>Flask (licence BSD)</li>
+                            <li>Tailwind CSS (licence MIT)</li>
+                            <li>Chart.js (licence MIT)</li>
+                            <li>Feather Icons (licence MIT)</li>
+                            <li>psutil (licence BSD)</li>
+                        </ul>
+                        
+                        <p class="text-gray-700 mt-4">Ce projet est présenté à des fins éducatives et ne peut être utilisé commercialement sans l'accord préalable de l'auteur.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protection des données -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">Protection des données</h3>
+                            <p class="text-sm text-sky-600">
+                                Informations sur les données collectées
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <p class="text-gray-700"><strong>Important :</strong> NetMonitor est un projet étudiant développé dans un cadre pédagogique. Les données collectées sont utilisées uniquement à des fins de test et de démonstration.</p>
+                        
+                        <h4 class="font-medium text-gray-800 mt-6 mb-2">Données collectées</h4>
+                        <p class="text-gray-700">Dans le cadre de ce projet, l'application collecte :</p>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                            <li>Des métriques système (CPU, mémoire, disque, réseau)</li>
+                            <li>Des noms d'hôtes et adresses IP pour la démonstration</li>
+                            <li>Des informations sur les fichiers partagés entre machines</li>
+                        </ul>
+                        
+                        <h4 class="font-medium text-gray-800 mt-6 mb-2">Finalité pédagogique</h4>
+                        <p class="text-gray-700">Ces données sont utilisées uniquement pour :</p>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                            <li>Démontrer les fonctionnalités du projet</li>
+                            <li>Évaluer le projet dans le cadre académique</li>
+                            <li>Tester les capacités techniques du monitoring réseau</li>
+                        </ul>
+                        
+                        <p class="text-gray-700 mt-4">Ce projet n'est pas destiné à être utilisé en production avec des données réelles sensibles. En cas d'utilisation en dehors du cadre académique, il conviendrait d'effectuer une mise en conformité complète avec le RGPD.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Avertissement -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">Avertissement</h3>
+                            <p class="text-sm text-sky-600">
+                                Limites d'utilisation
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <p class="text-gray-700">NetMonitor est un projet étudiant développé dans un cadre pédagogique et n'est pas destiné à un usage professionnel ou commercial.</p>
+                        
+                        <p class="text-gray-700">L'auteur ne peut garantir :</p>
+                        
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 ml-4">
+                            <li>La disponibilité continue du service</li>
+                            <li>L'exactitude des données affichées</li>
+                            <li>La sécurité complète des informations</li>
+                            <li>L'absence de bugs ou d'erreurs</li>
+                        </ul>
+                        
+                        <p class="text-gray-700 mt-4">Ce projet est fourni "en l'état", sans garantie d'aucune sorte, explicite ou implicite.</p>
+                        
+                        <p class="text-gray-700 mt-4">L'utilisation de ce projet en dehors du contexte académique se fait sous la responsabilité exclusive de l'utilisateur.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact et information -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">Contact et informations</h3>
+                            <p class="text-sm text-sky-600">
+                                Coordonnées de l'auteur
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <p class="text-gray-700">Pour toute question concernant ce projet étudiant :</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-semibold text-gray-800">Auteur du projet</p>
+                            <p>Mpia Mimpiya PULUDISU</p>
+                            <p>Étudiant en L2 Informatique à l'Université Paris 8 (IED)</p>
+                            <p>GitHub : <a href="https://github.com/codewithmpia" class="text-sky-600 hover:text-sky-800 transition-colors" target="_blank">https://github.com/codewithmpia</a></p>
+                        </div>
+                        
+                        <p class="text-gray-700 mt-8 text-sm">Dernière mise à jour : 18 mai 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,34 @@
+<nav class="bg-sky-900 shadow">
+    <div class="max-w-screen-lg mx-auto px-4 py-0">
+        <!-- Barre de navigation avec bouton hamburger -->
+        <div class="flex items-center justify-end py-3 sm:py-0">
+            <!-- Bouton hamburger/fermer pour mobile -->
+            <button id="navbar-toggle" class="sm:hidden text-white focus:outline-none">
+                <!-- Icône hamburger (affichée par défaut) -->
+                <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                <!-- Icône X (masquée par défaut) -->
+                <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="hidden"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        
+        <!-- Menu de navigation (caché sur mobile par défaut) -->
+        <div id="navbar-menu" class="hidden sm:flex sm:flex-row items-stretch sm:items-center transition-all duration-300 ease-in-out">
+            <a href="{{ url_for('index') }}" class="flex items-center gap-2 px-4 py-3 sm:py-3 hover:bg-black/30 transition-colors {{ 'bg-black/40 font-medium' if request.endpoint in ['index', 'legal_notice'] or (status|default(0) in [404, 500]) }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-100" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <span class="text-white">Accueil</span>
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="flex items-center gap-2 px-4 py-3 sm:py-3 hover:bg-black/30 transition-colors {{ 'bg-black/40 font-medium' if request.endpoint == 'dashboard'}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-100" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7"/></svg>
+                <span class="text-white">Tableau de Bord</span>
+            </a>
+            <a href="{{ url_for('files') }}" class="flex items-center gap-2 px-4 py-3 sm:py-3 hover:bg-black/30 transition-colors {{ 'bg-black/40 font-medium' if request.endpoint == 'files'}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-100" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+                <span class="text-white">Fichiers</span>
+            </a>
+            <a href="{{ url_for('about') }}" class="flex items-center gap-2 px-4 py-3 sm:py-3 hover:bg-black/30 transition-colors {{ 'bg-black/40 font-medium' if request.endpoint == 'about'}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-100" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                <span class="text-white">A propos</span>
+            </a>
+        </div>
+    </div>
+</nav>

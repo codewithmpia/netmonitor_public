@@ -1,0 +1,81 @@
+{% macro render_section_title_content(title) -%}
+    <section class="pt-10 pb-2">
+        <div class="max-w-screen-lg mx-auto px-4">
+            <h1 class="text-3xl sm:text-4xl font-bold text-sky-800 mb-3">{{ title }}</h1>
+            <div class="h-1 w-24 bg-sky-600 rounded-full mb-6"></div>
+            <div class="border-t border-gray-200"></div>
+        </div>
+    </section>
+{%- endmacro %}
+
+
+{% macro render_messages(dismissible=false) -%}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% set category_class = {
+                    'success': 'bg-green-50 text-green-800 border-green-200',
+                    'info': 'bg-sky-50 text-sky-800 border-sky-200',
+                    'warning': 'bg-amber-50 text-amber-800 border-amber-200',
+                    'danger': 'bg-red-50 text-red-800 border-red-200',
+                    'error': 'bg-red-50 text-red-800 border-red-200'
+                } %}
+                
+                {% set icon = {
+                    'success': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-5 w-5 text-green-500" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>',
+                    'info': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-5 w-5 text-sky-500" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+                    'warning': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-5 w-5 text-amber-500" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>',
+                    'danger': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-5 w-5 text-red-500" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>',
+                    'error': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-5 w-5 text-red-500" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>'
+                } %}
+                
+                <div id="alert-{{ loop.index }}" class="mb-4 rounded-md border p-4 shadow-sm transition-all duration-300 {{ category_class.get(category, 'bg-sky-50 text-sky-800 border-sky-200') }}">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            {{ icon.get(category, icon.info)|safe }}
+                        </div>
+                        <div class="ml-3 flex-grow">
+                            <p class="text-sm font-medium">{{ message }}</p>
+                        </div>
+                        {% if dismissible %}
+                            <div class="ml-auto pl-3">
+                                <div class="-mx-1.5 -my-1.5">
+                                    <button type="button" onclick="closeAlert('alert-{{ loop.index }}')" class="inline-flex rounded-md p-1.5 hover:bg-{{ category }}-100 focus:outline-none focus:ring-2 focus:ring-{{ category }}-500 focus:ring-offset-2">
+                                        <span class="sr-only">Fermer</span>
+                                        <svg fill="currentColor" aria-hidden="true" class="h-4 w-4" viewBox="0 0 20 20"><path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22z"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <script>
+                    // Supprimer le message du DOM quand l'utilisateur clique dessus
+                    function closeAlert(alertId) {
+                        const alert = document.getElementById(alertId);
+                        if (alert) {
+                            alert.style.opacity = '0';
+                            setTimeout(() => {
+                                alert.style.height = '0';
+                                alert.style.margin = '0';
+                                alert.style.padding = '0';
+                                alert.style.overflow = 'hidden';
+                                setTimeout(() => {
+                                    alert.remove();
+                                }, 300);
+                            }, 150);
+                        }
+                    }
+                    
+                    // Auto-disparition après 5 secondes si dismissible
+                    {% if dismissible %}
+                        setTimeout(() => {
+                            closeAlert('alert-{{ loop.index }}');
+                        }, 5000);
+                    {% endif %}
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{%- endmacro %}

@@ -1,0 +1,311 @@
+{% extends "partials/base.html" %}
+{% from "partials/macro.html" import render_section_title_content %}
+
+{% block title %}
+    {{ hostname }} - Métriques - NetMonitor
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <!-- Ajouter une balise meta pour stocker le hostname pour JavaScript -->
+    <meta name="client-hostname" content="{{ hostname }}">
+    <script>
+        // Variable globale pour le hostname (comme solution de secours)
+        window.clientHostname = "{{ hostname }}";
+    </script>
+{% endblock %}
+
+{% block section_title %}
+    {{ render_section_title_content(
+        title="Métriques de " + hostname) 
+    }}
+{% endblock %}
+
+{% block section_content %}
+    <section>
+        <div class="max-w-screen-lg mx-auto px-4">
+            <div class="mb-6">
+                <a href="{{ url_for('dashboard') }}" class="inline-flex items-center gap-2 text-sky-600 hover:text-sky-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7 7-7-7 7-7"/></svg>
+                    <span>Retour au tableau de bord</span>
+                </a>
+            </div>
+
+            <!-- Informations système -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><rect width="20" height="14" x="2" y="3" rx="2" ry="2"/><path d="M8 21h8M12 17v4"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">{{ current_file_display }}</h3>
+                            <p class="text-sm text-sky-600">
+                                {% if metrics and metrics.timestamp is defined %}
+                                    Métriques collectées: {{ metrics.timestamp|replace('T', ' ')|replace('Z', '')|replace('.', ' ') }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    {% if metrics %}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <h4 class="text-sm font-medium text-gray-500 uppercase mb-2">Système</h4>
+                            <p class="text-sm"><span class="font-medium">Hôte:</span> {{ metrics.hostname|default('N/A') }}</p>
+                            <p class="text-sm"><span class="font-medium">IP:</span> {{ metrics.ip_address|default('N/A') }}</p>
+                            <p class="text-sm"><span class="font-medium">Plateforme:</span> {{ metrics.platform|default('N/A') }}</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <h4 class="text-sm font-medium text-gray-500 uppercase mb-2">CPU</h4>
+                            <p class="text-sm"><span class="font-medium">Utilisation moyenne:</span> 
+                                {% if metrics.cpu is defined and metrics.cpu.cpu_percent_avg is defined %}
+                                    {{ metrics.cpu.cpu_percent_avg }}%
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                            <p class="text-sm"><span class="font-medium">Cœurs logiques:</span> 
+                                {% if metrics.cpu is defined and metrics.cpu.cpu_count_logical is defined %}
+                                    {{ metrics.cpu.cpu_count_logical }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                            <p class="text-sm"><span class="font-medium">Cœurs physiques:</span> 
+                                {% if metrics.cpu is defined and metrics.cpu.cpu_count_physical is defined %}
+                                    {{ metrics.cpu.cpu_count_physical }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <h4 class="text-sm font-medium text-gray-500 uppercase mb-2">Mémoire</h4>
+                            <p class="text-sm"><span class="font-medium">Utilisation:</span> 
+                                {% if metrics.memory is defined and metrics.memory.virtual_memory is defined and metrics.memory.virtual_memory.percent is defined %}
+                                    {{ metrics.memory.virtual_memory.percent }}%
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                            <p class="text-sm"><span class="font-medium">SWAP:</span> 
+                                {% if metrics.memory is defined and metrics.memory.swap_memory is defined and metrics.memory.swap_memory.percent is defined %}
+                                    {{ metrics.memory.swap_memory.percent }}%
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                            <p class="text-sm"><span class="font-medium">Total:</span> 
+                                {% if metrics.memory is defined and metrics.memory.virtual_memory is defined and metrics.memory.virtual_memory.total is defined %}
+                                    {{ metrics.memory.virtual_memory.total|format_bytes }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-6">
+                        <p class="text-red-600">Erreur lors du chargement des métriques</p>
+                        <p class="text-gray-600 mt-2">Veuillez réessayer ou sélectionner un autre fichier</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Graphiques -->
+            {% if chart_data %}
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                    <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-sky-800">Graphiques</h3>
+                                <p class="text-sm text-sky-600">
+                                    Visualisation des données système
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 space-y-8">
+                        <!-- CPU Graph -->
+                        {% if chart_data.cpu %}
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Utilisation CPU</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg" style="height: 300px;">
+                                <canvas id="cpuChart"></canvas>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Memory Graph -->
+                        {% if chart_data.memory %}
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Mémoire</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg" style="height: 300px;">
+                                <canvas id="memoryChart"></canvas>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Disk Graph -->
+                        {% if chart_data.disk %}
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Disques</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg" style="height: 300px;">
+                                <canvas id="diskChart"></canvas>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Network Graph -->
+                        {% if chart_data.network %}
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Réseau</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg" style="height: 300px;">
+                                <canvas id="networkChart"></canvas>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Historique des métriques -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-sky-50 px-6 py-4 border-b border-sky-100">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-sky-100 p-3 rounded-full flex items-center justify-center hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-sky-600"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-sky-800">Historique</h3>
+                            <p class="text-sm text-sky-600">
+                                Archives des données collectées
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    {% if history_files %}
+                        <div class="overflow-hidden border border-gray-200 rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200 history-files-table">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fichier</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Date</th>
+                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    {% for file in history_files %}
+                                        <tr class="hover:bg-gray-50 {% if current_file == file.filename %}bg-sky-50{% endif %}">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-8 w-8 text-sky-500">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M8 15h8"/></svg>
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <div class="text-sm font-medium text-gray-900">{{ file.filename }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-500">
+                                                    {{ file.display_name }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="{{ url_for('client_metrics_file', hostname=hostname, file=file.filename) }}?download=true" class="flex items-center justify-end text-sky-600 hover:text-sky-800 transition-colors" download>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-5 w-5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            <p class="text-gray-600">Aucun fichier de métriques historique disponible</p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Pagination de l'historique -->
+                    {% if pagination.pages > 1 %}
+                        <div class="mt-4 flex flex-col sm:flex-row gap-3 sm:gap-0 items-center justify-between pagination-container">
+                            <div class="text-sm text-gray-500 pagination-info">
+                                {% if pagination.total > 0 %}
+                                    Affichage de {{ pagination.first_item }} 
+                                    à {{ pagination.last_item }} 
+                                    sur {{ pagination.total }} fichiers
+                                {% else %}
+                                    Aucun fichier
+                                {% endif %}
+                            </div>
+                            <div class="flex space-x-1">
+                                {% if pagination.has_prev %}
+                                <a href="{{ url_for('client_metrics_file', hostname=hostname, file=current_file, page=pagination.prev_page) }}" 
+                                class="pagination-prev px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left-icon lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+                                </a>
+                                {% else %}
+                                <span class="pagination-prev px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left-icon lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+                                </span>
+                                {% endif %}
+                                
+                                {% for p in pagination.page_range %}
+                                <a href="{{ url_for('client_metrics_file', hostname=hostname, file=current_file, page=p) }}" 
+                                class="pagination-page px-4 py-2 border {% if p == pagination.page %}border-sky-500 bg-sky-50 text-sky-600{% else %}border-gray-300 bg-white text-gray-700 hover:bg-gray-50{% endif %} rounded-md text-sm font-medium">
+                                    {{ p }}
+                                </a>
+                                {% endfor %}
+                                
+                                {% if pagination.has_next %}
+                                <a href="{{ url_for('client_metrics_file', hostname=hostname, file=current_file, page=pagination.next_page) }}" 
+                                class="pagination-next px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right-icon lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                                {% else %}
+                                <span class="pagination-next px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right-icon lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block block_script %}
+     <!-- Chargement de Chart.js -->
+    <script src="{{ url_for('static', filename='js/chartjs.min.js') }}"></script>
+    <script>
+        // Les données des graphiques sont déjà chargées dans la variable chartData
+        const chartData = {{ chart_data| tojson }};
+
+        // On récupère aussi les données de métriques brutes
+        const metricsData = {{ metrics| tojson }};
+    </script>
+
+    <script src="{{ url_for('static', filename='js/floating-refresh-button.js') }}"></script>
+    <!-- Chargement du fichier client.js -->
+    <script src="{{ url_for('static', filename='js/client.js') }}"></script>
+{% endblock %}

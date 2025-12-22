@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='favicon/ms-icon-144x144.png') }}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ url_for('static', filename='favicon/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ url_for('static', filename='favicon/apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='favicon/apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='favicon/apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='favicon/apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='favicon/apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ url_for('static', filename='favicon/apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='favicon/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ url_for('static', filename='favicon/android-icon-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='favicon/favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='favicon/manifest.json') }}">
+
+    {% block head %}{% endblock %}
+    
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!-- Définition de la police personnalisée -->
+    <style>
+        /* Police Inter variable pour tous les poids */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/Inter-VariableFont_opsz,wght.ttf') }}') format('truetype-variations');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/Inter-Italic-VariableFont_opsz,wght.ttf') }}') format('truetype-variations');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        /* Fallbacks pour navigateurs plus anciens ne supportant pas les polices variables */
+        /* Poids Thin (100) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-Thin.ttf') }}') format('truetype');
+            font-weight: 100;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids ExtraLight (200) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-ExtraLight.ttf') }}') format('truetype');
+            font-weight: 200;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids Light (300) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-Light.ttf') }}') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids Regular (400) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-Regular.ttf') }}') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids Medium (500) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-Medium.ttf') }}') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids SemiBold (600) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-SemiBold.ttf') }}') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids Bold (700) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-Bold.ttf') }}') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids ExtraBold (800) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-ExtraBold.ttf') }}') format('truetype');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* Poids Black (900) */
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ url_for('static', filename='fonts/static/Inter_18pt-Black.ttf') }}') format('truetype');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50 font-inter text-gray-800">
+    <header class="sticky top-0 z-50 bg-gradient-to-r from-sky-800 to-sky-700 text-white shadow-md">
+        <div class="max-w-screen-lg mx-auto px-4 py-6">
+            <div class="flex flex-col gap-3">
+                <a href="{{ url_for('index') }}" class="flex items-center gap-3 text-4xl font-bold hover:opacity-90 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-sky-100" viewBox="0 0 24 24"><rect width="6" height="6" x="16" y="16" rx="1"/><rect width="6" height="6" x="2" y="16" rx="1"/><rect width="6" height="6" x="9" y="2" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 12V8"/></svg>
+                    <span>NetMonitor</span>
+                </a>
+                <p class="text-sky-100 text-base">Système de Surveillance et Partage de Ressources Réseau</p>
+            </div>
+        </div>
+        {% include "partials/navbar.html" %}
+    </header>
+    
+    <main class="flex-grow">
+        {% block section_title %}{% endblock %}
+        {% block section_content %}{% endblock %}
+    </main>
+    
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-10">
+        <div class="max-w-screen-lg mx-auto px-4 text-center sm:text-left">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>&copy; 2025 <a href="{{ url_for('index') }}" class="hover:text-white transition-colors">NetMonitor</a> - Mpia Mimpiya PULUDISU</div>
+                <div class="flex gap-4">
+                    <a href="{{ url_for('about') }}" class="hover:text-white transition-colors">À propos</a>
+                    <a href="{{ url_for('legal_notice') }}" class="hover:text-white transition-colors">Mentions légales</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block block_script %}{% endblock %}
+</body>
+</html>
