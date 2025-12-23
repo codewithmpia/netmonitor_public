@@ -4,7 +4,7 @@
   <img src="./cover.png" alt="NetMonitor Cover" width="100%">
 </p>
 
-Un système de surveillance et partage de ressources réseau développé en Python avec une architecture client-serveur robuste et une interface web moderne.
+Un système de surveillance et partage de ressources réseau développé en Python avec une architecture client-serveur robuste et une interface web moderne. Développé dans le cadre du projet final du cours de Réseaux L2 Informatique.
 
 ## 📋 Table des matières
 
@@ -283,7 +283,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ## 👨‍💻 Auteur
 
-**Mpia Mimpiya PULUDISU**
+**Mpia M.**
 - GitHub: [@codewithmpia](https://github.com/codewithmpia)
 - Université Paris 8 - L2 Informatique
 - Cours : Réseaux (Chapitre 10)
