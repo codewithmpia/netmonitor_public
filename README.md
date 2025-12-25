@@ -84,8 +84,8 @@ Le système est composé de trois modules principaux :
 
 ### 1. Cloner le repository
 ```bash
-git clone https://github.com/codewithmpia/netmonitor.git
-cd netmonitor
+git clone https://github.com/codewithmpia/netmonitor_public.git
+cd netmonitor_public
 ```
 
 ### 2. Créer un environnement virtuel
